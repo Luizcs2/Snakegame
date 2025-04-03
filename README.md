@@ -16,18 +16,22 @@ Before running the game, you need to have the following installed on your system
    ```bash
    git clone https://github.com/Luizcs2/Snakegame.git
    cd Snakegame
-Navigate to the src directory:
+   
 The Java source files are located inside the src directory.
-
+```bash
 cd src
+```
+
 Compile the Java files:
 
 Use the javac command to compile all the Java files in the com/zetcode package:
+```bash
 javac com/zetcode/*.java
-
-
+```
 After compiling the Java files, you can run the game with the java command:
+```bash
 java com.zetcode.Snake
+```
 
 This will start the Snake game in a new window, and you can begin playing!
 Controls
