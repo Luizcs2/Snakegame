@@ -14,6 +14,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 public class Board extends JPanel implements ActionListener {
 
@@ -41,11 +43,12 @@ public class Board extends JPanel implements ActionListener {
     private Image ball;
     private Image apple;
     private Image head;
+    private JButton retryButton;
 
     public Board() {
         initBoard();
     }
-    
+
     private void initBoard() {
         addKeyListener(new TAdapter());
         setBackground(Color.black);
@@ -54,6 +57,12 @@ public class Board extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         loadImages();
         initGame();
+
+        retryButton = new JButton("Retry");
+        retryButton.setBounds(120, 130, 80, 30);  // Set the location of the button
+        retryButton.setVisible(false); // Initially hidden
+        retryButton.addActionListener(e -> restartGame());
+        add(retryButton);
     }
 
     private void loadImages() {
@@ -95,7 +104,7 @@ public class Board extends JPanel implements ActionListener {
             Toolkit.getDefaultToolkit().sync();
         } else {
             gameOver(g);
-        }        
+        }
     }
 
     private void gameOver(Graphics g) {
@@ -106,6 +115,9 @@ public class Board extends JPanel implements ActionListener {
         g.setColor(Color.white);
         g.setFont(small);
         g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
+
+        // Display the retry button when the game is over
+        retryButton.setVisible(true);
     }
 
     private void checkApple() {
@@ -159,6 +171,27 @@ public class Board extends JPanel implements ActionListener {
         apple_x = r * DOT_SIZE;
         r = (int) (Math.random() * RAND_POS);
         apple_y = r * DOT_SIZE;
+    }
+
+    private void restartGame() {
+        // Reset the game variables
+        dots = 3;
+        leftDirection = false;
+        rightDirection = true;
+        upDirection = false;
+        downDirection = false;
+        inGame = true;
+
+        for (int z = 0; z < dots; z++) {
+            x[z] = 100 - z * DOT_SIZE;
+            y[z] = 100;
+        }
+
+        locateApple();
+        retryButton.setVisible(false); // Hide the button after the game restarts
+
+        timer.start(); // Restart the game timer
+        repaint();
     }
 
     @Override
